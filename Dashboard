@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 Biggest Loser Challenge</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #E74C3C;
+            --secondary: #3498DB;
+            --success: #2ECC71;
+            --warning: #F39C12;
+            --dark: #1A1A2E;
+            --darker: #0F0F1E;
+            --light: #FFFFFF;
+            --gray: #95A5A6;
+            --purple: #9B59B6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #0F0F1E 0%, #1A1A2E 50%, #16213E 100%);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(231, 76, 60, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(52, 152, 219, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(46, 204, 113, 0.05) 0%, transparent 50%);
+            animation: backgroundShift 20s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .logo {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            background: linear-gradient(135deg, var(--primary), var(--warning), var(--success));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 4px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.3rem;
+            color: var(--gray);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .week-info {
+            text-align: center;
+            margin: 20px 0 30px 0;
+            padding: 20px;
+            background: rgba(231, 76, 60, 0.1);
+            border-radius: 15px;
+            border: 2px solid rgba(231, 76, 60, 0.3);
+        }
+
+        .week-info h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--warning);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .week-dates {
+            font-size: 1.1rem;
+            color: var(--light);
+            font-weight: 600;
+        }
+
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+            animation: fadeIn 1s ease-out 0.3s backwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .stat-card {
+            background: rgba(26, 26, 46, 0.7);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(231, 76, 60, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.2) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(231, 76, 60, 0.4);
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            color: var(--primary);
+            display: block;
+            line-height: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 968px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: rgba(26, 26, 46, 0.6);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(231, 76, 60, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease-out backwards;
+        }
+
+        @keyframes fadeInUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(231, 76, 60, 0.3);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+        }
+
+        .card-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            color: var(--warning);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .leaderboard-item {
+            display: grid;
+            grid-template-columns: 60px 1fr auto auto;
+            align-items: center;
+            gap: 15px;
+            padding: 18px;
+            margin-bottom: 12px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 12px;
+            border-left: 4px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .leaderboard-item:hover {
+            background: rgba(231, 76, 60, 0.1);
+            transform: translateX(5px);
+            border-left-color: var(--primary);
+        }
+
+        .leaderboard-item.rank-1 { border-left-color: #FFD700; background: rgba(255, 215, 0, 0.05); }
+        .leaderboard-item.rank-2 { border-left-color: #C0C0C0; background: rgba(192, 192, 192, 0.05); }
+        .leaderboard-item.rank-3 { border-left-color: #CD7F32; background: rgba(205, 127, 50, 0.05); }
+
+        .rank-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: rgba(231, 76, 60, 0.2);
+            border-radius: 50%;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .rank-1 .rank-badge { background: rgba(255, 215, 0, 0.2); color: #FFD700; }
+        .rank-2 .rank-badge { background: rgba(192, 192, 192, 0.2); color: #C0C0C0; }
+        .rank-3 .rank-badge { background: rgba(205, 127, 50, 0.2); color: #CD7F32; }
+
+        .participant-info {
+            flex: 1;
+        }
+
+        .participant-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--light);
+            margin-bottom: 5px;
+        }
+
+        .participant-details {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .weight-lost {
+            text-align: right;
+            margin-right: 15px;
+        }
+
+        .weight-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--success);
+            line-height: 1;
+        }
+
+        .weight-value.negative {
+            color: var(--primary);
+        }
+
+        .weight-label {
+            font-size: 0.75rem;
+            color: var(--gray);
+            text-transform: uppercase;
+        }
+
+        .percentage {
+            text-align: right;
+        }
+
+        .percentage-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            color: var(--warning);
+            line-height: 1;
+        }
+
+        .percentage-label {
+            font-size: 0.75rem;
+            color: var(--gray);
+            text-transform: uppercase;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .tip-content {
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.2) 0%, rgba(243, 156, 18, 0.2) 100%);
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tip-content::before {
+            content: '"';
+            position: absolute;
+            top: -30px;
+            left: 10px;
+            font-size: 8rem;
+            color: rgba(231, 76, 60, 0.2);
+            font-family: Georgia, serif;
+        }
+
+        .tip-text {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: var(--light);
+            position: relative;
+            z-index: 1;
+            font-weight: 500;
+        }
+
+        .tip-category {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: var(--warning);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+
+        .progress-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .progress-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .progress-item:hover {
+            background: rgba(231, 76, 60, 0.1);
+            transform: scale(1.05);
+        }
+
+        .progress-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            color: var(--secondary);
+            display: block;
+            line-height: 1;
+        }
+
+        .progress-label {
+            font-size: 0.8rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 8px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.2rem;
+            color: var(--gray);
+        }
+
+        .loading::after {
+            content: '...';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+
+        .error {
+            background: rgba(231, 76, 60, 0.1);
+            border: 2px solid var(--primary);
+            padding: 20px;
+            border-radius: 12px;
+            color: var(--primary);
+        }
+
+        .error h3 {
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .error p {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .error ol {
+            margin: 15px 0 15px 25px;
+            line-height: 1.8;
+        }
+
+        .error code {
+            background: rgba(0,0,0,0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .refresh-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(135deg, var(--primary), var(--warning));
+            border: none;
+            border-radius: 50%;
+            color: var(--light);
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(231, 76, 60, 0.5);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .refresh-btn:hover {
+            transform: scale(1.15) rotate(180deg);
+            box-shadow: 0 15px 40px rgba(231, 76, 60, 0.7);
+        }
+
+        .last-updated {
+            text-align: center;
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-top: 30px;
+            opacity: 0.7;
+        }
+
+        .setup-notice {
+            background: rgba(243, 156, 18, 0.2);
+            border: 2px solid var(--warning);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .setup-notice h3 {
+            color: var(--warning);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .setup-notice p {
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .setup-notice a {
+            color: var(--warning);
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">🏆💪</div>
+            <h1>2026 Biggest Loser Challenge</h1>
+            <p class="subtitle">Transform Your Life, One Pound at a Time</p>
+        </header>
+
+        <div class="setup-notice" id="setupNotice" style="display: none;">
+            <h3>⚠️ CORS Issue Detected</h3>
+            <p>The dashboard must be run from a web server, not directly from your computer.</p>
+            <p><strong>Quick Fix:</strong> Upload this HTML file to Google Drive, Dropbox, or any web hosting service.</p>
+            <p>Or follow the instructions in the README to run a local web server.</p>
+        </div>
+
+        <div class="week-info">
+            <h2 id="weekTitle">Week 1</h2>
+            <div class="week-dates" id="weekDates">Loading...</div>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <span class="stat-value" id="totalParticipants">0</span>
+                <span class="stat-label">Warriors</span>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⚖️</div>
+                <span class="stat-value" id="totalWeightLost">0</span>
+                <span class="stat-label">Total Lbs Lost</span>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🔥</div>
+                <span class="stat-value" id="avgWeightLost">0</span>
+                <span class="stat-label">Avg Lbs Lost</span>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📅</div>
+                <span class="stat-value" id="currentWeek">1</span>
+                <span class="stat-label">Current Week</span>
+            </div>
+        </div>
+
+        <div class="main-grid">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-icon">🏆</span>
+                    <h2 class="card-title">Leaderboard</h2>
+                </div>
+                <div id="leaderboard">
+                    <div class="loading">Loading champions</div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-icon">💡</span>
+                        <h2 class="card-title">Daily Motivation</h2>
+                    </div>
+                    <div class="tip-content">
+                        <p class="tip-text" id="dailyTip"></p>
+                        <div class="tip-category" id="tipCategory"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-icon">📊</span>
+                        <h2 class="card-title">Challenge Stats</h2>
+                    </div>
+                    <div class="progress-stats">
+                        <div class="progress-item">
+                            <span class="progress-value" id="biggestLoser">0</span>
+                            <span class="progress-label">Biggest Loss (lbs)</span>
+                        </div>
+                        <div class="progress-item">
+                            <span class="progress-value" id="topPercent">0%</span>
+                            <span class="progress-label">Top % Lost</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="last-updated">
+            Last updated: <span id="lastUpdated">Never</span>
+        </div>
+    </div>
+
+    <button class="refresh-btn" onclick="loadData()" title="Refresh Data">
+        🔄
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script>
+        const SHEET_ID = 'e/2PACX-1vRCswDMVaBv83pe6stSD6gT13AYhNDkLHKZkbYtEMIVif3xy4wV9vXxOxcuboGcmLiJi8r60UAZAQeq';
+        const CHALLENGE_START_DATE = new Date('2025-12-30');
+
+        function getCurrentWeekInfo() {
+            const today = new Date();
+            const daysSinceStart = Math.floor((today - CHALLENGE_START_DATE) / (1000 * 60 * 60 * 24));
+            const weekNumber = Math.floor(daysSinceStart / 7) + 1;
+            
+            return {
+                weekNumber: Math.max(1, weekNumber),
+                startDate: new Date(CHALLENGE_START_DATE.getTime() + (weekNumber - 1) * 7 * 24 * 60 * 60 * 1000),
+                endDate: new Date(CHALLENGE_START_DATE.getTime() + weekNumber * 7 * 24 * 60 * 60 * 1000 - 1)
+            };
+        }
+
+        function getWeekDateRange(weekNum) {
+            const weekStart = new Date(CHALLENGE_START_DATE.getTime() + (weekNum - 1) * 7 * 24 * 60 * 60 * 1000);
+            const weekEnd = new Date(weekStart.getTime() + 6 * 24 * 60 * 60 * 1000);
+            
+            const formatDate = (date) => {
+                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            };
+            
+            return `${formatDate(weekStart)} - ${formatDate(weekEnd)}`;
+        }
+
+        function displayWeekInfo() {
+            const weekInfo = getCurrentWeekInfo();
+            document.getElementById('weekTitle').textContent = `Week ${weekInfo.weekNumber}`;
+            document.getElementById('weekDates').textContent = getWeekDateRange(weekInfo.weekNumber);
+            document.getElementById('currentWeek').textContent = weekInfo.weekNumber;
+        }
+
+        const dailyTips = {
+            nutrition: [
+                "Protein Power: Aim for 20-30g of protein at each meal to preserve muscle mass while losing weight.",
+                "Hydration Hero: Drink water before meals - it can help you eat 75 fewer calories per meal!",
+                "Veggie Victory: Fill half your plate with non-starchy vegetables for volume and nutrition with fewer calories.",
+                "Healthy Fats: Include avocado, nuts, and olive oil in moderation - they keep you satisfied longer.",
+                "Meal Prep Magic: Prepare healthy meals on Sunday to avoid impulsive food choices during the week.",
+                "Fiber Focus: Foods high in fiber keep you full longer. Aim for 25-30g daily from whole grains, fruits, and veggies.",
+                "Portion Control: Use smaller plates to naturally reduce portion sizes without feeling deprived."
+            ],
+            motivation: [
+                "You didn't come this far to only come this far. Keep pushing!",
+                "Every pound lost is a victory. Celebrate your progress, no matter how small!",
+                "Your body can stand almost anything. It's your mind you have to convince.",
+                "The only bad workout is the one that didn't happen. Show up for yourself today!",
+                "Believe in yourself and all that you are. You're stronger than you think!",
+                "Success is the sum of small efforts repeated day in and day out.",
+                "Don't wish for it. Work for it. You're building the body you deserve!"
+            ],
+            fitness: [
+                "HIIT it: High-Intensity Interval Training burns calories long after your workout ends.",
+                "Strength Training: Building muscle increases your metabolism, helping you burn more calories at rest.",
+                "Walk it Out: A 30-minute walk burns 150-200 calories and requires no equipment!",
+                "Morning Movement: Exercise before breakfast can increase fat burning by up to 20%.",
+                "Consistency Wins: Three 30-minute workouts beat one 90-minute session. Stay consistent!",
+                "Active Recovery: Light activity on rest days promotes healing and keeps your metabolism active.",
+                "Track Your Steps: Aim for 10,000 steps daily - it's an easy way to boost calorie burn."
+            ],
+            wellness: [
+                "Sleep is Sacred: Get 7-9 hours per night. Poor sleep increases hunger hormones and cravings.",
+                "Stress Less: High cortisol from stress can promote belly fat storage. Try meditation or deep breathing.",
+                "Measure Progress: Take photos and measurements, not just scale weight. Muscle weighs more than fat!",
+                "Mindful Eating: Eat slowly and without distractions. It takes 20 minutes for your brain to register fullness.",
+                "Stay Positive: Your mindset matters. Focus on what you CAN do, not what you can't.",
+                "Social Support: Share your journey with friends and family. Accountability increases success rates!",
+                "Celebrate Non-Scale Victories: More energy, better sleep, and fitting into old clothes are all wins!"
+            ]
+        };
+
+        function getDailyTip() {
+            const categories = Object.keys(dailyTips);
+            const today = new Date();
+            const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+            
+            const categoryIndex = dayOfYear % categories.length;
+            const category = categories[categoryIndex];
+            const tips = dailyTips[category];
+            const tipIndex = dayOfYear % tips.length;
+            
+            return {
+                text: tips[tipIndex],
+                category: category.charAt(0).toUpperCase() + category.slice(1)
+            };
+        }
+
+        function displayDailyTip() {
+            const tip = getDailyTip();
+            document.getElementById('dailyTip').textContent = tip.text;
+            document.getElementById('tipCategory').textContent = `💫 ${tip.category}`;
+        }
+
+        function calculateParticipantData(data) {
+            const participants = {};
+            
+            data.forEach(row => {
+                const name = row['Participant'];
+                const startWeightKey = Object.keys(row).find(k => k.includes('Starting Weight'));
+                const startWeight = parseFloat(row[startWeightKey]) || 0;
+                const currentWeight = parseFloat(row['Current Weight']) || 0;
+                const week = row['Week #'];
+                
+                if (!name) return;
+                
+                if (!participants[name]) {
+                    participants[name] = {
+                        name: name,
+                        startWeight: 0,
+                        currentWeight: 0,
+                        latestWeek: '',
+                        hasData: false
+                    };
+                }
+                
+                if (startWeight > 0 && participants[name].startWeight === 0) {
+                    participants[name].startWeight = startWeight;
+                }
+                
+                if (currentWeight > 0) {
+                    participants[name].currentWeight = currentWeight;
+                    participants[name].latestWeek = week || 'Week 1';
+                    participants[name].hasData = true;
+                }
+                
+                if (participants[name].startWeight === 0 && currentWeight > 0) {
+                    participants[name].startWeight = currentWeight;
+                }
+            });
+            
+            return Object.values(participants)
+                .filter(p => p.hasData && p.startWeight > 0)
+                .map(p => ({
+                    ...p,
+                    weightLost: p.startWeight - p.currentWeight,
+                    percentLost: ((p.startWeight - p.currentWeight) / p.startWeight * 100)
+                }))
+                .sort((a, b) => b.weightLost - a.weightLost);
+        }
+
+        function updateLeaderboard(participants) {
+            if (participants.length === 0) {
+                document.getElementById('leaderboard').innerHTML = '<div class="loading">No data available yet</div>';
+                return;
+            }
+            
+            const leaderboardHTML = participants.map((p, index) => {
+                const rank = index + 1;
+                const rankClass = `rank-${Math.min(rank, 3)}`;
+                const weightClass = p.weightLost >= 0 ? '' : 'negative';
+                
+                return `
+                    <div class="leaderboard-item ${rankClass}">
+                        <div class="rank-badge">${rank}</div>
+                        <div class="participant-info">
+                            <div class="participant-name">${p.name}</div>
+                            <div class="participant-details">
+                                Start: ${p.startWeight.toFixed(1)} lbs • Current: ${p.currentWeight.toFixed(1)} lbs
+                            </div>
+                        </div>
+                        <div class="weight-lost">
+                            <div class="weight-value ${weightClass}">${Math.abs(p.weightLost).toFixed(1)}</div>
+                            <div class="weight-label">${p.weightLost >= 0 ? 'Lost' : 'Gained'}</div>
+                        </div>
+                        <div class="percentage">
+                            <div class="percentage-value">${Math.abs(p.percentLost).toFixed(1)}%</div>
+                            <div class="percentage-label">Change</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            document.getElementById('leaderboard').innerHTML = leaderboardHTML;
+        }
+
+        function updateStats(participants) {
+            document.getElementById('totalParticipants').textContent = participants.length;
+            
+            const totalLost = participants.reduce((sum, p) => sum + p.weightLost, 0);
+            document.getElementById('totalWeightLost').textContent = totalLost.toFixed(1);
+            
+            const avgLost = participants.length > 0 ? totalLost / participants.length : 0;
+            document.getElementById('avgWeightLost').textContent = avgLost.toFixed(1);
+            
+            if (participants.length > 0) {
+                document.getElementById('biggestLoser').textContent = participants[0].weightLost.toFixed(1);
+                document.getElementById('topPercent').textContent = participants[0].percentLost.toFixed(1) + '%';
+            }
+            
+            displayWeekInfo();
+        }
+
+        async function loadData() {
+            try {
+                const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/pub?output=csv`;
+                
+                Papa.parse(url, {
+                    download: true,
+                    header: true,
+                    complete: function(results) {
+                        const participants = calculateParticipantData(results.data);
+                        updateLeaderboard(participants);
+                        updateStats(participants);
+                        updateLastUpdated();
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                        // Show CORS notice
+                        document.getElementById('setupNotice').style.display = 'block';
+                        document.getElementById('leaderboard').innerHTML = `
+                            <div class="error">
+                                <h3>⚠️ Unable to Load Data</h3>
+                                <p><strong>CORS Error:</strong> The dashboard must be accessed via a web server.</p>
+                                <p style="margin-top: 15px;"><strong>Solutions:</strong></p>
+                                <ol>
+                                    <li><strong>Upload to web hosting</strong> (Google Drive, Dropbox, GitHub Pages, etc.)</li>
+                                    <li><strong>Run a local web server:</strong><br>
+                                    <code>python -m http.server 8000</code><br>
+                                    Then visit: <code>http://localhost:8000</code></li>
+                                    <li><strong>Use a browser extension</strong> like "Live Server" (VS Code) or "Web Server for Chrome"</li>
+                                </ol>
+                            </div>
+                        `;
+                    }
+                });
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.getElementById('setupNotice').style.display = 'block';
+            }
+        }
+
+        function updateLastUpdated() {
+            const now = new Date();
+            document.getElementById('lastUpdated').textContent = now.toLocaleString();
+        }
+
+        displayDailyTip();
+        displayWeekInfo();
+        loadData();
+        setInterval(loadData, 5 * 60 * 1000);
+    </script>
+</body>
+</html>
